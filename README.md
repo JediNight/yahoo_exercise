@@ -41,8 +41,7 @@ This project consists of an AWS Lambda function designed to upload files to an A
 
 To remove the deployed infrastructure:
 
-1. Navigate to `/terraform/environments/prod`.
-2. Run `terraform destroy`.
+1. Run `terraform destroy`.
 
 ## Troubleshooting
 
