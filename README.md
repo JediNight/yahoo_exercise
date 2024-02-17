@@ -4,7 +4,7 @@
 
 This project consists of an AWS Lambda function designed to upload files to an AWS S3 bucket. It's triggered by an AWS EventBridge rule, running at a predefined schedule to ensure timely updates. A more detailed summary can be found in the Documentation folder
 
-![1708127634025](image/README/1708127634025.png)
+![]()![1708132239679](image/README/1708132239679.png)
 
 ## Prerequisites
 
