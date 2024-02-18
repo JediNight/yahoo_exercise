@@ -1,37 +1,36 @@
 import boto3
-import os
 from botocore.exceptions import ClientError
+import os
 
 # Initialize the S3 client
 s3 = boto3.client('s3')
-kms = boto3.client('kms')
-
 
 # Your S3 bucket name
 bucket_name = os.environ['BUCKET_NAME']
-kms_key_arn = os.environ['KMS_KEY_ARN']
 
 def lambda_handler(event, context):
-    # Get the list of objects in the bucket
     try:
-        # List objects in the S3 bucket, sorted by last modified date
-        response = s3.list_objects_v2(
-            Bucket=bucket_name,
-            Prefix='',  # You can specify a prefix if your objects are in a folder
-            MaxKeys=1
-        )
-        
-        # Check if there are any objects in the bucket
-        if 'Contents' in response:
-            all_objects = sorted(response['Contents'], key=lambda obj: obj['LastModified'], reverse=True)
-            
-            # Get the key of the most recent object
-            latest_object_key = all_objects[0]['Key']
-            
+        # Initialize paginator for handling potentially truncated responses
+        paginator = s3.get_paginator('list_objects_v2')
+        pages = paginator.paginate(Bucket=bucket_name, Prefix='')
+
+        latest_object_key = None
+        latest_last_modified = None
+
+        # Iterate over each page of objects
+        for page in pages:
+            if 'Contents' in page:
+                for obj in page['Contents']:
+                    if latest_last_modified is None or obj['LastModified'] > latest_last_modified:
+                        latest_last_modified = obj['LastModified']
+                        latest_object_key = obj['Key']
+
+        # Check if we found an object
+        if latest_object_key:
             # Get the content of the most recent object
             latest_object = s3.get_object(Bucket=bucket_name, Key=latest_object_key)
             latest_content = latest_object['Body'].read().decode('utf-8')
-            
+
             # Return the content of the latest object
             return {
                 'statusCode': 200,
