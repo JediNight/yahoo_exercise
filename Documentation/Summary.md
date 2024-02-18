@@ -4,7 +4,7 @@
 
 This document outlines the architecture of a serverless application deployed on AWS, leveraging Terraform for infrastructure management. The solution utilizes AWS Lambda, Amazon S3, AWS KMS, and Amazon CloudWatch to create a scalable, secure, and cost-effective application.
 
-![1708132239679](https://file+.vscode-resource.vscode-cdn.net/Users/toksfawibe/Downloads/yahoo_assessment/image/README/1708132239679.png)
+![1708132239679](../image/README/1708132239679.png)
 
 ### Services and Components
 
